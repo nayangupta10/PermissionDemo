@@ -15,27 +15,50 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        btnCameraPermission.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED ) {
+        btnCameraAndFineLocationPermission.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
 
-                Toast.makeText(this, "You already have the permission for access the camera", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "You already have the permission for access the camera and gps",
+                    Toast.LENGTH_SHORT
+                ).show()
 
             } else {
                 //Request Permission
-                ActivityCompat.requestPermissions(this,
-                        arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION),
+                    CAMERA_AND_FINE_LOCATION_PERMISSION_CODE
+                )
             }
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == CAMERA_PERMISSION_CODE) {
+        if (requestCode == CAMERA_AND_FINE_LOCATION_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission granted for camera.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Permission granted for camera and gps.", Toast.LENGTH_SHORT)
+                    .show()
             } else {
-                Toast.makeText(this, "Oops you just denied the camera permission. You can also allow it from settings.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Oops you just denied the camera and gps permission. You can also allow it from settings.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -43,6 +66,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val CAMERA_PERMISSION_CODE = 1
         private const val FINE_LOCATION_PERMISSION_CODE = 2
-        private const val CAMERA_AND_FINE_LOCATION_PERMISSION_CODE=12
+        private const val CAMERA_AND_FINE_LOCATION_PERMISSION_CODE = 12
     }
 }
